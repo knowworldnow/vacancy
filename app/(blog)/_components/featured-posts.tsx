@@ -18,24 +18,9 @@ const featuredPosts = [
     excerpt: 'Get an intimate look at the next generation of Hollywood talent...',
     image: 'https://images.unsplash.com/photo-1500917293891-ef795e70e1f6',
     category: 'Celebrities',
-    slug: 'behind-the-scenes-hollywood-rising-stars'
+    slug: 'behind-the-scenes-hollywood-rising-stars',
   },
-  {
-    id: '2',
-    title: 'Summer Fashion Trends: What Celebrities Are Wearing',
-    excerpt: 'Discover the hottest fashion trends celebrities are embracing...',
-    image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b',
-    category: 'Fashion',
-    slug: 'summer-fashion-trends-celebrities'
-  },
-  {
-    id: '3',
-    title: 'Celebrity Wellness Secrets Revealed',
-    excerpt: 'Learn the wellness routines of your favorite stars...',
-    image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773',
-    category: 'Lifestyle',
-    slug: 'celebrity-wellness-secrets'
-  }
+  // ... other featured posts
 ];
 
 export function FeaturedPosts() {
