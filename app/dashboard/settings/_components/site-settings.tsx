@@ -67,7 +67,7 @@ export function SiteSettings() {
       <CardHeader>
         <CardTitle>Site Settings</CardTitle>
         <CardDescription>
-          Configure your blog's general settings
+          Configure your blog&apos;s general settings
         </CardDescription>
       </CardHeader>
       <CardContent>
