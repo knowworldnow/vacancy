@@ -20,8 +20,18 @@ export interface Post {
   featuredImage: string;
   categoryId: string;
   authorId: string;
-  publishedAt: string;
-  tags: string[];
-  author?: Author;
-  category?: Category;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  published: boolean;
+  keywords: string[];
+  relatedPosts: string[];
+  seo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    ogImage?: string;
+  };
+  faqs: Array<{
+    question: string;
+    answer: string;
+  }>;
 }
