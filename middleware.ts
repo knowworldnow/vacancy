@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { rateLimit } from '@/lib/rate-limit';
+import { verifyJWT } from '@/lib/auth';
 
-const CSRF_SAFE_METHODS = ['GET', 'HEAD', 'OPTIONS'];
+const PROTECTED_PATHS = ['/dashboard'];
+const AUTH_PATHS = ['/login', '/register'];
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
@@ -24,23 +25,31 @@ export async function middleware(request: NextRequest) {
   headers.append('Link', '<https://images.unsplash.com>; rel=preconnect');
   headers.append('Link', '<https://fonts.gstatic.com>; rel=preconnect');
 
-  // Cache Control Headers
-  const url = request.nextUrl;
-  
-  if (url.pathname.startsWith('/api/')) {
-    headers.set('Cache-Control', 'no-store');
-  } else if (
-    url.pathname.match(/\.(jpg|jpeg|png|webp|avif|gif|ico)$/) ||
-    url.pathname.includes('_next/image')
-  ) {
-    headers.set('Cache-Control', 'public, max-age=31536000, immutable');
-  } else if (url.pathname.match(/\.(css|js)$/)) {
-    headers.set('Cache-Control', 'public, max-age=31536000, immutable');
-  } else {
-    headers.set(
-      'Cache-Control',
-      'public, max-age=3600, s-maxage=60, stale-while-revalidate=300'
-    );
+  // Authentication Check
+  const token = request.cookies.get('auth-token')?.value;
+  const isProtectedPath = PROTECTED_PATHS.some(path => 
+    request.nextUrl.pathname.startsWith(path)
+  );
+  const isAuthPath = AUTH_PATHS.some(path => 
+    request.nextUrl.pathname.startsWith(path)
+  );
+
+  if (isProtectedPath) {
+    if (!token) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+
+    const payload = await verifyJWT(token);
+    if (!payload) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+  }
+
+  if (isAuthPath && token) {
+    const payload = await verifyJWT(token);
+    if (payload) {
+      return NextResponse.redirect(new URL('/dashboard', request.url));
+    }
   }
 
   // Compression
@@ -53,3 +62,9 @@ export async function middleware(request: NextRequest) {
 
   return response;
 }
+
+export const config = {
+  matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+  ],
+};
