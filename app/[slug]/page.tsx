@@ -1,1 +1,0 @@
-// Delete this file as it's conflicting with the posts route
