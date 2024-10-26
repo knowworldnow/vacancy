@@ -20,16 +20,17 @@ export const postSchema = z.object({
   title: z.string(),
   content: z.string(),
   slug: z.string(),
+  excerpt: z.string().max(160),
+  featuredImage: z.string().url(),
   published: z.boolean(),
   authorId: z.string(),
   categoryId: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
-  keywords: z.array(z.string()).optional(),
+  keywords: z.array(z.string()).default([]),
   relatedPosts: z.array(z.string()).optional(),
   seo: seoSchema.optional(),
   faqs: z.array(faqSchema).optional(),
-  excerpt: z.string().max(160).optional(),
 });
 
 export const pageSchema = z.object({
@@ -41,7 +42,7 @@ export const pageSchema = z.object({
   authorId: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
-  keywords: z.array(z.string()).optional(),
+  keywords: z.array(z.string()).default([]),
   seo: seoSchema.optional(),
   faqs: z.array(faqSchema).optional(),
 });
