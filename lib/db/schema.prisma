@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id            String     @id @default(cuid())
+  title         String
+  slug          String     @unique @default(cuid())
+  content       String     @db.Text
+  excerpt       String?    @db.Text
+  featuredImage String?
+  published     Boolean    @default(false)
+  categoryId    String
+  category      Category   @relation(fields: [categoryId], references: [id])
+  keywords      String[]
+  faqs          FAQ[]
+  seo           SEO?
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([categoryId])
+  @@index([published])
+  @@index([createdAt])
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?  @db.Text
+  posts       Post[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+}
+
+model FAQ {
+  id       String @id @default(cuid())
+  question String
+  answer   String @db.Text
+  post     Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId   String
+
+  @@index([postId])
+}
+
+model SEO {
+  id              String  @id @default(cuid())
+  metaTitle       String?
+  metaDescription String?
+  featuredImage   String?
+  canonicalUrl    String?
+  ogTitle         String?
+  ogDescription   String?
+  ogImage         String?
+  post            Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId          String  @unique
+}

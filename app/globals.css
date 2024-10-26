@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smooth page transitions */
+.page-transition {
+  @apply animate-in fade-in slide-in-from-bottom-4 duration-500;
+}
+
+/* Smooth hover effects */
+.hover-lift {
+  @apply transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg;
+}
+
+/* Smooth image zoom */
+.image-zoom {
+  @apply transition-transform duration-500 hover:scale-105;
+}
+
+/* Rest of the existing CSS remains the same */
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+/* ... rest of the existing CSS ... */
